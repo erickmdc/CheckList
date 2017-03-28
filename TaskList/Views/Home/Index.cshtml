@@ -1,0 +1,58 @@
+﻿@model IEnumerable<TaskList.Models.task>
+
+@{
+    ViewBag.Title = "Home";
+}
+
+<div class="mdl-grid">
+    <h3>Lista de Tarefas</h3>
+    <!--Formulário para inserção de tarefa-->
+    <div class="mdl-cell mdl-cell--12-col" id="divForm">
+        <form id="formTask">
+            <div class="mdl-textfield mdl-js-textfield">
+                <textarea class="mdl-textfield__input" type="text" rows="5" id="Task" maxlength="80"; name="Description"></textarea>
+                <label class="mdl-textfield__label" for="task">Digite aqui sua tarefa...</label>
+            </div>
+        </form>
+
+        <button class="mdl-button mdl-js-button mdl-button--raised mdl-button--colored" id="btnSave" onclick="SaveTask()">
+            Salvar Tarefa
+        </button>
+    </div>
+
+    <!--Lista de Tarefas-->
+    <div class="mdl-cell mdl-cell--12-col" id="divList">
+        <ul class="demo-list-two mdl-list" id="TaskList">
+
+            @foreach (var item in Model)
+            {
+                if (item.Status == true)
+                {
+                    <li class="mdl-card mdl-shadow--4dp mdl-cell mdl-cell--12-col mdl-list__item" onclick="ChangeStatus(@item.TaskId)" id="@item.TaskId">
+                        <div class="mdl-list__item-primary-content">
+                            <span class="description description-em-andamento">@item.Description</span>
+                            <span class="mdl-list__item-sub-title status status-em-andamento">Em Andamento</span>
+                        </div>
+                    </li>
+                }
+                else
+                {
+                    <li class="mdl-card mdl-shadow--4dp mdl-cell mdl-cell--12-col mdl-list__item" onclick="ChangeStatus(@item.TaskId)" id="@item.TaskId">
+                        <div class="mdl-list__item-primary-content">
+                            <span class="description description-pronto">@item.Description</span>
+                            <span class="mdl-list__item-sub-title status status-pronto">Pronto</span>
+                        </div>
+                    </li>
+                }
+            }
+        </ul>
+    </div>
+</div>
+
+<script>
+    //Rotas das Requisições Ajax
+    var SaveForm = '@Url.Action("SaveForm", "Home")';
+    var ChangeStatusTask = '@Url.Action("ChangeStatus", "Home")';
+</script>
+
+<script src="~/Scripts/tasklist.js"></script>
